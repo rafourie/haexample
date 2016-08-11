@@ -24,7 +24,6 @@ public class HACounterService implements Service<String> {
      * @return the name of the server node
      */
     public String getValue() throws IllegalStateException, IllegalArgumentException {
-
         return System.getenv("HOSTNAME");
     }
 

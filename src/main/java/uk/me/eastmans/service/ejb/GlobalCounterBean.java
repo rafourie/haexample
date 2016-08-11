@@ -9,6 +9,10 @@ import javax.ejb.Singleton;
 public class GlobalCounterBean implements GlobalCounter {
     private int counter = 0;
 
+    public GlobalCounterBean()
+    {
+        System.out.println( "********** GlobalCounterBean created!!!!" );
+    }
     @Override
     public void reset()
     {
