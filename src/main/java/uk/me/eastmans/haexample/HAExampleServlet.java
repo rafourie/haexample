@@ -1,5 +1,9 @@
 package uk.me.eastmans.haexample;
 
+import uk.me.eastmans.service.ejb.GlobalCounter;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -21,13 +25,15 @@ public class HAExampleServlet  extends GenericServlet {
     public void service(ServletRequest req, ServletResponse res)
             throws IOException, ServletException
     {
-        String message = System.getenv("HOSTNAME"); // This will be the pod name
+        StringBuilder message = new StringBuilder(System.getenv("HOSTNAME")); // This will be the pod name
         if (req instanceof HttpServletRequest)
         {
             HttpServletRequest httpReq = (HttpServletRequest) req;
             HttpSession session = httpReq.getSession();
             Integer count = incrementCount( session );
-            message = "From session " + session.getId() + ", for the " + count + " time on pod " + message;
+            message.append( " from session " + session.getId() + ", for the " + count + " time on pod " );
+            // We now want to add the singleton counter bean to get a global counter
+            message.append( " and global counter is " + incrementSingletonCounter() );
         }
         res.getWriter().println(message);
     }
@@ -43,4 +49,16 @@ public class HAExampleServlet  extends GenericServlet {
         return count;
     }
 
+    private int incrementSingletonCounter()
+    {
+        try {
+            InitialContext ic = new InitialContext();
+            return ((GlobalCounter) ic.lookup("global/jboss-cluster-ha-singleton-service/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+                    .increment();
+        } catch (NamingException e)
+        {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }

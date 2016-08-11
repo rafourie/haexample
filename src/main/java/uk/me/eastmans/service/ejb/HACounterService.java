@@ -33,11 +33,25 @@ public class HACounterService implements Service<String> {
             throw new StartException("The service is still started!");
         }
         // Nothing to really start
+        try {
+            InitialContext ic = new InitialContext();
+            ((GlobalCounter) ic.lookup("global/jboss-cluster-ha-singleton-service/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+                    .reset();
+        } catch (NamingException e) {
+            throw new StartException("Could not reset global counter", e);
+        }
     }
 
     public void stop(StopContext arg0) {
         if (started.compareAndSet(true, false)) {
             // Nothing to really stop
+            try {
+                InitialContext ic = new InitialContext();
+                ((GlobalCounter) ic.lookup("global/jboss-cluster-ha-singleton-service/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+                        .reset();
+            } catch (NamingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
