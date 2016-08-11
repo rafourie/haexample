@@ -8,6 +8,19 @@
     <name>haexample</name>
     <artifactId>haexample</artifactId>
 
+    <repositories>
+        <repository>
+            <id>jboss-enterprise-maven-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -20,6 +33,16 @@
             <artifactId>javaee-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.msc</groupId>
+            <artifactId>jboss-msc</artifactId>
+            <version>1.2.6.Final-redhat-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.eap</groupId>
+            <artifactId>wildfly-clustering-singleton-api</artifactId>
+            <version>7.0.1.GA-redhat-2</version>
         </dependency>
     </dependencies>
     <build>
