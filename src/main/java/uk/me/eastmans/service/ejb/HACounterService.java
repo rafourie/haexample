@@ -34,7 +34,7 @@ public class HACounterService implements Service<String> {
         // Nothing to really start
         try {
             InitialContext ic = new InitialContext();
-            ((GlobalCounter) ic.lookup("global/haexample/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+            ((GlobalCounter) ic.lookup("global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
                     .reset();
         } catch (NamingException e) {
             throw new StartException("Could not reset global counter", e);
@@ -46,7 +46,7 @@ public class HACounterService implements Service<String> {
             // Nothing to really stop
             try {
                 InitialContext ic = new InitialContext();
-                ((GlobalCounter) ic.lookup("global/haexample/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+                ((GlobalCounter) ic.lookup("global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
                         .reset();
             } catch (NamingException e) {
                 e.printStackTrace();
