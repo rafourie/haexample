@@ -21,13 +21,13 @@ public class HAExampleServlet  extends GenericServlet {
     public void service(ServletRequest req, ServletResponse res)
             throws IOException, ServletException
     {
-        String message = "Unknown ServletRequest type";
+        String message = System.getenv("HOSTNAME"); // This will be the pod name
         if (req instanceof HttpServletRequest)
         {
             HttpServletRequest httpReq = (HttpServletRequest) req;
             HttpSession session = httpReq.getSession();
             Integer count = incrementCount( session );
-            message = "From session " + session.getId() + ", for the " + count + " time ";
+            message = "From session " + session.getId() + ", for the " + count + " time on pod " + message;
         }
         res.getWriter().println(message);
     }
