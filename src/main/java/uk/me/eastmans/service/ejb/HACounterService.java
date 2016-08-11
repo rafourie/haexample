@@ -29,7 +29,7 @@ public class HACounterService implements Service<String> {
 
     public void start(StartContext arg0) throws StartException {
         if (!started.compareAndSet(false, true)) {
-            throw new StartException("The service is still started!");
+            throw new StartException("The service is still starting!");
         }
         // Nothing to really start
         try {
