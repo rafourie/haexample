@@ -53,7 +53,7 @@ public class HAExampleServlet  extends GenericServlet {
     {
         try {
             InitialContext ic = new InitialContext();
-            return ((GlobalCounter) ic.lookup("global/jboss-cluster-ha-singleton-service/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
+            return ((GlobalCounter) ic.lookup("global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter"))
                     .increment();
         } catch (NamingException e)
         {

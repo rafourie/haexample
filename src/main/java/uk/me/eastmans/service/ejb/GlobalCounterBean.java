@@ -8,14 +8,8 @@ import java.util.logging.Logger;
  */
 @Singleton
 public class GlobalCounterBean implements GlobalCounter {
-    private final Logger log = Logger.getLogger(this.getClass().toString());
 
     private int counter = 0;
-
-    public GlobalCounterBean()
-    {
-        log.info( "********** GlobalCounterBean created!!!!" );
-    }
 
     @Override
     public void reset()
