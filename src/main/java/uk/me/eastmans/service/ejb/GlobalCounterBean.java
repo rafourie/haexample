@@ -27,6 +27,6 @@ public class GlobalCounterBean implements GlobalCounter {
     @Override
     public int increment ()
     {
-        return counter++;
+        return ++counter;
     }
 }
