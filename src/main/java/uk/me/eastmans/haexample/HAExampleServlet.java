@@ -31,7 +31,7 @@ public class HAExampleServlet  extends GenericServlet {
             HttpServletRequest httpReq = (HttpServletRequest) req;
             HttpSession session = httpReq.getSession();
             Integer count = incrementCount( session );
-            message.append( " from session " + session.getId() + ", for the " + count + " time on pod " );
+            message.append( " from session " + session.getId() + ", for the " + count + " time " );
             // We now want to add the singleton counter bean to get a global counter
             message.append( " and global counter is " + incrementSingletonCounter() );
         }

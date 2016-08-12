@@ -39,8 +39,9 @@ public class HACounterServiceActivator implements ServiceActivator {
 
         factory.createSingletonServiceBuilder(HACounterService.SINGLETON_SERVICE_NAME, service)
                 .electionPolicy(new SimpleSingletonElectionPolicy())
-                .requireQuorum(2)
+                //.requireQuorum(2)
                 .build(context.getServiceTarget())
+                .setInitialMode(ServiceController.Mode.ACTIVE)
                 .install();
     }
 }
