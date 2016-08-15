@@ -27,6 +27,9 @@ public class HACounterService implements Service<String> {
      * @return the name of the server node
      */
     public String getValue() throws IllegalStateException, IllegalArgumentException {
+        if (!started.get()) {
+            throw new IllegalStateException("The service '" + this.getClass().getName() + "' is not ready!");
+        }
         log.info( "HACounterService.getValue() on pod " + System.getenv("HOSTNAME") );
         return System.getenv("HOSTNAME");
     }

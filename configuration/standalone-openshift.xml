@@ -107,6 +107,9 @@
             <logger category="org.infinispan">
                 <level name="DEBUG"/>
             </logger>
+            <logger category="uk.me.meastmans">
+                <level name="DEBUG"/>
+            </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
             </logger>
