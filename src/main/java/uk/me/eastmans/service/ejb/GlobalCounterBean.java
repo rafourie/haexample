@@ -16,6 +16,7 @@ public class GlobalCounterBean implements GlobalCounter {
     public GlobalCounterBean()
     {
         log.info( "+++++++++++++ GlobalCounterBean created" );
+        Thread.dumpStack();
     }
 
     @Override
