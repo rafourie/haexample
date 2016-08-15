@@ -1,6 +1,7 @@
 package uk.me.eastmans.haexample;
 
 import uk.me.eastmans.service.ejb.GlobalCounter;
+import uk.me.eastmans.service.ejb.HACounterService;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -53,7 +54,7 @@ public class HAExampleServlet  extends GenericServlet {
     {
         try {
             InitialContext ic = new InitialContext();
-            return ((GlobalCounter) ic.lookup("java:global/ROOT/GlobalCounterBean"))
+            return ((GlobalCounter) ic.lookup("ejb:global/ROOT/GlobalCounterBean"))
                     .increment();
         } catch (NamingException e)
         {
