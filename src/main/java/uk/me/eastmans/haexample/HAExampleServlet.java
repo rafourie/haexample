@@ -13,12 +13,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 /**
  * Created by markeastman on 11/08/2016.
  */
 @WebServlet(value="/haexample", name="haexample-servlet")
 public class HAExampleServlet  extends GenericServlet {
+
+    private final Logger log = Logger.getLogger(this.getClass().toString());
 
     private static final String COUNT_VALUE = "countValue";
 
@@ -54,8 +57,11 @@ public class HAExampleServlet  extends GenericServlet {
     {
         try {
             InitialContext ic = new InitialContext();
-            return ((GlobalCounter) ic.lookup("ejb:global/ROOT/GlobalCounterBean"))
-                    .increment();
+            Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean"));
+            log.info( "+++++++++ ejb bean is " + ejb );
+            if (ejb != null)
+                log.info( "+++++++++ ejb bean type " + ejb.getClass() );
+//                    .increment();
         } catch (NamingException e)
         {
             e.printStackTrace();
