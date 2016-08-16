@@ -2,12 +2,14 @@ package uk.me.eastmans.service.ejb;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
+import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import java.util.logging.Logger;
 
 /**
  * Created by markeastman on 11/08/2016.
  */
+@Remote
 @Singleton
 public class GlobalCounterBean implements GlobalCounter {
 
