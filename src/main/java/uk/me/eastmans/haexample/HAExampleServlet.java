@@ -57,7 +57,7 @@ public class HAExampleServlet  extends GenericServlet {
     {
         try {
             InitialContext ic = new InitialContext();
-            Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean"));
+            Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null)
                 log.info( "+++++++++ ejb bean type " + ejb.getClass() );
