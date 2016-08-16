@@ -3,6 +3,7 @@ package uk.me.eastmans.haexample;
 import uk.me.eastmans.service.ejb.GlobalCounter;
 import uk.me.eastmans.service.ejb.HACounterService;
 
+import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.GenericServlet;
@@ -13,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.logging.Logger;
 
 /**
@@ -56,8 +58,10 @@ public class HAExampleServlet  extends GenericServlet {
     private int incrementSingletonCounter()
     {
         try {
-            InitialContext ic = new InitialContext();
-            Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
+            final Hashtable jndiProperties = new Hashtable();
+            jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+            final Context context = new InitialContext(jndiProperties);
+            Object ejb = context.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null && ejb instanceof GlobalCounter)
             {
