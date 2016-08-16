@@ -59,7 +59,7 @@ public class HAExampleServlet  extends GenericServlet {
             InitialContext ic = new InitialContext();
             Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
-            if (ejb != null)
+            if (ejb != null && ejb instanceof GlobalCounter)
             {
                 // Try to cast
                 GlobalCounter counter = (GlobalCounter) ejb;
