@@ -1,5 +1,7 @@
 package uk.me.eastmans.service.ejb;
 
+import javax.ejb.Lock;
+import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import java.util.logging.Logger;
 
@@ -20,12 +22,14 @@ public class GlobalCounterBean implements GlobalCounter {
     }
 
     @Override
+    @Lock(LockType.WRITE)
     public void reset()
     {
         counter = 0;
     }
 
     @Override
+    @Lock(LockType.WRITE)
     public int increment ()
     {
         return ++counter;

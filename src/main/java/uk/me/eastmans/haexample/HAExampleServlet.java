@@ -60,8 +60,11 @@ public class HAExampleServlet  extends GenericServlet {
             Object ejb = ic.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null)
-                log.info( "+++++++++ ejb bean type " + ejb.getClass() );
-//                    .increment();
+            {
+                // Try to cast
+                GlobalCounter counter = (GlobalCounter) ejb;
+                return counter.increment();
+            }
         } catch (NamingException e)
         {
             e.printStackTrace();
