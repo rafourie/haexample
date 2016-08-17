@@ -56,10 +56,12 @@ public class HAExampleServlet  extends GenericServlet {
 
     private int incrementSingletonCounter()
     {
+        Context context = null;
         try {
             final Hashtable jndiProperties = new Hashtable();
             jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            final Context context = new InitialContext(jndiProperties);
+            jndiProperties.put("jboss.naming.client.ejb.context",true);
+            context = new InitialContext(jndiProperties);
             Object ejb = context.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null && ejb instanceof GlobalCounter)
@@ -75,6 +77,13 @@ public class HAExampleServlet  extends GenericServlet {
         } catch (NamingException e)
         {
             e.printStackTrace();
+        }
+        finally
+        {
+            if (context != null)
+                try {
+                    context.close();
+                } catch (Exception ce) { }
         }
         return -1;
     }
