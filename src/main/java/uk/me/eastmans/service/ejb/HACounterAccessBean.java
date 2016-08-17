@@ -1,5 +1,6 @@
 package uk.me.eastmans.service.ejb;
 
+import org.jboss.msc.service.ServiceContainer;
 import org.jboss.msc.service.ServiceController;
 import org.jboss.as.server.CurrentServiceContainer;
 
@@ -13,16 +14,21 @@ public class HACounterAccessBean implements HACounterAccess {
 
     public String getCounterValue() {
         log.info("Method getCounterValue() is invoked");
-        ServiceController<?> service = CurrentServiceContainer.getServiceContainer().getService(
-                HACounterService.SINGLETON_SERVICE_NAME);
+        final ServiceContainer serviceContainer = CurrentServiceContainer.getServiceContainer();
+        if (serviceContainer != null) {
+            ServiceController<?> service = serviceContainer.getService(HACounterService.SINGLETON_SERVICE_NAME);
 
-        // Example how to leverage JBoss Logging to do expensive String concatenation only when needed:
-        log.info("Service: " + service);
+            // Example how to leverage JBoss Logging to do expensive String concatenation only when needed:
+            log.info("Service: " + service);
 
-        if (service != null) {
-            return service.getValue().toString();
+            if (service != null) {
+                return service.getValue().toString();
+            } else {
+                throw new IllegalStateException("Service '" + HACounterService.SINGLETON_SERVICE_NAME + "' not found!");
+            }
         } else {
-            throw new IllegalStateException("Service '" + HACounterService.SINGLETON_SERVICE_NAME + "' not found!");
+            throw new IllegalStateException("ServiceContainer is null");
         }
+
     }
 }
