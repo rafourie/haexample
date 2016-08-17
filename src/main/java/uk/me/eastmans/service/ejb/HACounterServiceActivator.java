@@ -16,8 +16,10 @@ public class HACounterServiceActivator implements ServiceActivator {
     public void activate(ServiceActivatorContext context) {
 
         HACounterService service = new HACounterService();
+        ServiceRegistry serviceRegistry = context.getServiceRegistry();
+        ServiceRegistryWrapper.setServiceRegistry(serviceRegistry);
         ServiceName factoryServiceName = SingletonServiceName.BUILDER.getServiceName("server", "default");
-        ServiceController<?> factoryService = context.getServiceRegistry().getRequiredService(factoryServiceName);
+        ServiceController<?> factoryService = serviceRegistry.getRequiredService(factoryServiceName);
         SingletonServiceBuilderFactory factory = (SingletonServiceBuilderFactory) factoryService.getValue();
 /*        factory.createSingletonServiceBuilder(HACounterService.SINGLETON_SERVICE_NAME, service)
             /*

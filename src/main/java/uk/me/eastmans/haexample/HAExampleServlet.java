@@ -1,6 +1,10 @@
 package uk.me.eastmans.haexample;
 
+import org.jboss.msc.service.Service;
+import org.jboss.msc.service.ServiceController;
 import uk.me.eastmans.service.ejb.GlobalCounter;
+import uk.me.eastmans.service.ejb.HACounterService;
+import uk.me.eastmans.service.ejb.ServiceRegistryWrapper;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -38,7 +42,8 @@ public class HAExampleServlet  extends GenericServlet {
             Integer count = incrementCount( session );
             message.append( " from session " + session.getId() + ", for the " + count + " time " );
             // We now want to add the singleton counter bean to get a global counter
-            message.append( " and global counter is " + incrementSingletonCounter() );
+            //message.append( " and global counter is " + incrementSingletonCounter() );
+            findService();
         }
         res.getWriter().println(message);
     }
@@ -62,7 +67,7 @@ public class HAExampleServlet  extends GenericServlet {
             jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
             jndiProperties.put("jboss.naming.client.ejb.context",true);
             context = new InitialContext(jndiProperties);
-            Object ejb = context.lookup("jboss/exported/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
+            Object ejb = context.lookup("java:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null && ejb instanceof GlobalCounter)
             {
@@ -86,5 +91,14 @@ public class HAExampleServlet  extends GenericServlet {
                 } catch (Exception ce) { }
         }
         return -1;
+    }
+
+    private void findService()
+    {
+        final ServiceController<?> requiredService = ServiceRegistryWrapper.getServiceRegistry()
+                .getRequiredService(HACounterService.SINGLETON_SERVICE_NAME);
+        final Service<?> service = requiredService.getService();
+        final String masterNodeName = (String) service.getValue();
+        log.info( "+++++++++++++++ service bean on pod " + masterNodeName);
     }
 }
