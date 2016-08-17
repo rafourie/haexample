@@ -60,13 +60,17 @@ public class HAExampleServlet  extends GenericServlet {
             final Hashtable jndiProperties = new Hashtable();
             jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
             final Context context = new InitialContext(jndiProperties);
-            Object ejb = context.lookup("global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
+            Object ejb = context.lookup("ejb:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
             if (ejb != null && ejb instanceof GlobalCounter)
             {
                 // Try to cast
                 GlobalCounter counter = (GlobalCounter) ejb;
                 return counter.increment();
+            }
+            else
+            {
+                log.info( "++++++++ ejb is not of type GlobalCounter");
             }
         } catch (NamingException e)
         {
