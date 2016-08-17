@@ -41,7 +41,7 @@ public class HAExampleServlet  extends GenericServlet {
             HttpSession session = httpReq.getSession();
             Integer count = incrementCount( session );
             message.append( " from session " + session.getId() + ", for the " + count + " time " );
-            message.append( " and global counter is " + findServiceValue() );
+            message.append( " and global counter is " + getSingletonServiceValue() );
         }
         res.getWriter().println(message);
     }
@@ -57,12 +57,11 @@ public class HAExampleServlet  extends GenericServlet {
         return count;
     }
 
-    private int findServiceValue()
+    private int getSingletonServiceValue()
     {
         final ServiceController<?> requiredService = ServiceRegistryWrapper.getServiceRegistry()
                 .getRequiredService(HACounterService.SINGLETON_SERVICE_NAME);
         final Service<?> service = requiredService.getService();
-        log.info( "++++++++++++ the service we received is of type " + service.getClass() );
         return (Integer) service.getValue();
     }
 }
