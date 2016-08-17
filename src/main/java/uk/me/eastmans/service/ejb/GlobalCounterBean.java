@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 /**
  * Created by markeastman on 11/08/2016.
  */
-@Remote
 @Singleton
+@Remote (GlobalCounter.class)
 public class GlobalCounterBean implements GlobalCounter {
 
     private final Logger log = Logger.getLogger(this.getClass().toString());
