@@ -1,8 +1,6 @@
 package uk.me.eastmans.haexample;
 
 import uk.me.eastmans.service.ejb.GlobalCounter;
-import uk.me.eastmans.service.ejb.HACounterAccess;
-import uk.me.eastmans.service.ejb.HACounterService;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -56,24 +54,24 @@ public class HAExampleServlet  extends GenericServlet {
         return count;
     }
 
-    private String incrementSingletonCounter()
+    private int incrementSingletonCounter()
     {
         try {
             final Hashtable jndiProperties = new Hashtable();
             jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
             final Context context = new InitialContext(jndiProperties);
-            Object ejb = context.lookup("global/ROOT/HACounterAccessBean!uk.me.eastmans.service.ejb.HACounterAccess");
+            Object ejb = context.lookup("global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
             log.info( "+++++++++ ejb bean is " + ejb );
-            if (ejb != null && ejb instanceof HACounterAccess)
+            if (ejb != null && ejb instanceof GlobalCounter)
             {
                 // Try to cast
-                HACounterAccess counter = (HACounterAccess) ejb;
-                return counter.getCounterValue();
+                GlobalCounter counter = (GlobalCounter) ejb;
+                return counter.increment();
             }
         } catch (NamingException e)
         {
             e.printStackTrace();
         }
-        return "-1";
+        return -1;
     }
 }
