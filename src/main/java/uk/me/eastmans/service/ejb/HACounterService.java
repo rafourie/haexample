@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 /**
  * Created by markeastman on 11/08/2016.
  */
-public class HACounterService implements Service<String> {
+public class HACounterService implements Service<Integer> {
     private final Logger log = Logger.getLogger(this.getClass().toString());
     public static final ServiceName SINGLETON_SERVICE_NAME = ServiceName.JBOSS.append("openshift", "ha", "singleton", "counter");
 
@@ -26,12 +26,17 @@ public class HACounterService implements Service<String> {
     /**
      * @return the name of the server node
      */
-    public String getValue() throws IllegalStateException, IllegalArgumentException {
+    public Integer getValue() throws IllegalStateException, IllegalArgumentException {
         if (!started.get()) {
             throw new IllegalStateException("The service '" + this.getClass().getName() + "' is not ready!");
         }
-        log.info( "HACounterService.getValue() on pod " + System.getenv("HOSTNAME") );
-        return System.getenv("HOSTNAME");
+        try {
+            InitialContext ic = new InitialContext();
+            return ((GlobalCounter) ic.lookup("java:global/ROOT/GlobalCounterBean"))
+                    .increment();
+        } catch (NamingException e) {
+            throw new IllegalStateException("Could not increment global counter", e);
+        }
     }
 
     public void start(StartContext arg0) throws StartException {

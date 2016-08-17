@@ -41,9 +41,7 @@ public class HAExampleServlet  extends GenericServlet {
             HttpSession session = httpReq.getSession();
             Integer count = incrementCount( session );
             message.append( " from session " + session.getId() + ", for the " + count + " time " );
-            // We now want to add the singleton counter bean to get a global counter
-            //message.append( " and global counter is " + incrementSingletonCounter() );
-            findService();
+            message.append( " and global counter is " + findServiceValue() );
         }
         res.getWriter().println(message);
     }
@@ -59,46 +57,12 @@ public class HAExampleServlet  extends GenericServlet {
         return count;
     }
 
-    private int incrementSingletonCounter()
-    {
-        Context context = null;
-        try {
-            final Hashtable jndiProperties = new Hashtable();
-            jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-            jndiProperties.put("jboss.naming.client.ejb.context",true);
-            context = new InitialContext(jndiProperties);
-            Object ejb = context.lookup("java:global/ROOT/GlobalCounterBean!uk.me.eastmans.service.ejb.GlobalCounter");
-            log.info( "+++++++++ ejb bean is " + ejb );
-            if (ejb != null && ejb instanceof GlobalCounter)
-            {
-                // Try to cast
-                GlobalCounter counter = (GlobalCounter) ejb;
-                return counter.increment();
-            }
-            else
-            {
-                log.info( "++++++++ ejb is not of type GlobalCounter");
-            }
-        } catch (NamingException e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (context != null)
-                try {
-                    context.close();
-                } catch (Exception ce) { }
-        }
-        return -1;
-    }
-
-    private void findService()
+    private int findServiceValue()
     {
         final ServiceController<?> requiredService = ServiceRegistryWrapper.getServiceRegistry()
                 .getRequiredService(HACounterService.SINGLETON_SERVICE_NAME);
         final Service<?> service = requiredService.getService();
-        final String masterNodeName = (String) service.getValue();
-        log.info( "+++++++++++++++ service bean on pod " + masterNodeName);
+        log.info( "++++++++++++ the service we received is of type " + service.getClass() );
+        return (Integer) service.getValue();
     }
 }
