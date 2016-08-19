@@ -17,6 +17,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
@@ -42,6 +46,7 @@ public class HAExampleServlet  extends GenericServlet {
             Integer count = incrementCount( session );
             message.append( " from session " + session.getId() + ", for the " + count + " time " );
             message.append( " and global counter is " + getSingletonServiceValue() );
+            message.append( " and db counter is " + getFromDatabaseCounter() );
         }
         res.getWriter().println(message);
     }
@@ -63,5 +68,38 @@ public class HAExampleServlet  extends GenericServlet {
                 .getRequiredService(HACounterService.SINGLETON_SERVICE_NAME);
         final Service<?> service = requiredService.getService();
         return (Integer) service.getValue();
+    }
+
+    private int getFromDatabaseCounter()
+    {
+        int result = -1;
+        try {
+            String databaseURL = "jdbc:postgresql://";
+            databaseURL += System.getenv("POSTGRESQL_94_RHEL7_SERVICE_HOST");
+            databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
+
+            String username = System.getenv("POSTGRESQL_USER");
+            String password = System.getenv("PGPASSWORD");
+            String hostname = System.getenv("HOSTNAME");
+
+			Connection connection = DriverManager.getConnection(databaseURL, username, password);
+
+			if (connection != null) {
+				String updateSQL = "update counters set current_value = current_value+1 where name = 'globalSingleton'";
+				Statement updateStmt = connection.createStatement();
+                updateStmt.executeUpdate(updateSQL);
+                String getSQL = "select current_value from counters where name ='globalSingleton'";
+                Statement getStmt = connection.createStatement();
+                ResultSet rs = getStmt.executeQuery(getSQL);
+				while (rs.next()) {
+				    result = rs.getInt(0);
+				}
+				rs.close();
+				connection.close();
+			}
+        } catch (Exception e) {
+            log.severe("Problem with database");
+        }
+        return result;
     }
 }
