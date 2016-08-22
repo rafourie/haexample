@@ -92,7 +92,7 @@ public class HAExampleServlet  extends GenericServlet {
                 Statement getStmt = connection.createStatement();
                 ResultSet rs = getStmt.executeQuery(getSQL);
 				while (rs.next()) {
-				    result = rs.getInt(0);
+				    result = rs.getInt(1);
 				}
 				rs.close();
 				connection.close();
