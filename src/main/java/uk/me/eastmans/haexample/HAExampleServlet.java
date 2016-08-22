@@ -99,6 +99,7 @@ public class HAExampleServlet  extends GenericServlet {
 			}
         } catch (Exception e) {
             log.severe("Problem with database");
+            e.printStackTrace();
         }
         return result;
     }
