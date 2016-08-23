@@ -140,6 +140,13 @@
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
                 <!-- ##DATASOURCES## -->
+                <data-source>
+                    <name>java:haexample/hadbDS</name>
+                    <class-name>org.postgresql.ds.PGPoolingDataSource</class-name>
+                    <url>jdbc:postgresql://172.30.72.214:5432/hadb</url>
+                    <user>hadb</user>
+                    <password>hadb</password>
+                </data-source>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>

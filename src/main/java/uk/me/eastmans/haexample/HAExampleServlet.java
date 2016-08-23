@@ -2,10 +2,13 @@ package uk.me.eastmans.haexample;
 
 import org.jboss.msc.service.Service;
 import org.jboss.msc.service.ServiceController;
+import uk.me.eastmans.domain.Counter;
+import uk.me.eastmans.domain.CounterRepository;
 import uk.me.eastmans.service.ejb.GlobalCounter;
 import uk.me.eastmans.service.ejb.HACounterService;
 import uk.me.eastmans.service.ejb.ServiceRegistryWrapper;
 
+import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -29,6 +32,9 @@ import java.util.logging.Logger;
  */
 @WebServlet(value="/haexample", name="haexample-servlet")
 public class HAExampleServlet  extends GenericServlet {
+
+    @Inject
+    private CounterRepository counterRepository;
 
     private final Logger log = Logger.getLogger(this.getClass().toString());
 
@@ -72,35 +78,8 @@ public class HAExampleServlet  extends GenericServlet {
 
     private int getFromDatabaseCounter()
     {
-        int result = -1;
-        try {
-            String databaseURL = "jdbc:postgresql://";
-            databaseURL += System.getenv("POSTGRESQL_94_RHEL7_SERVICE_HOST");
-            databaseURL += "/" + System.getenv("POSTGRESQL_DATABASE");
-
-            String username = System.getenv("POSTGRESQL_USER");
-            String password = System.getenv("PGPASSWORD");
-            String hostname = System.getenv("HOSTNAME");
-
-			Connection connection = DriverManager.getConnection(databaseURL, username, password);
-
-			if (connection != null) {
-				String updateSQL = "update counters set current_value = current_value+1 where name = 'globalSingleton'";
-				Statement updateStmt = connection.createStatement();
-                updateStmt.executeUpdate(updateSQL);
-                String getSQL = "select current_value from counters where name ='globalSingleton'";
-                Statement getStmt = connection.createStatement();
-                ResultSet rs = getStmt.executeQuery(getSQL);
-				while (rs.next()) {
-				    result = rs.getInt(1);
-				}
-				rs.close();
-				connection.close();
-			}
-        } catch (Exception e) {
-            log.severe("Problem with database");
-            e.printStackTrace();
-        }
-        return result;
+        Counter c = counterRepository.findByName("globalSingleton");
+        // We need to increment the counter rather than just get the current value;
+        return c.getValue();
     }
 }
