@@ -14,10 +14,13 @@ public class CounterRepository {
     @Inject
     private EntityManager em;
 
-    public Counter findByName( String name )
+    public int incrementCounter( String name )
     {
         TypedQuery<Counter> query = em.createQuery( "select c from Counter c where c.name = :name", Counter.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        Counter counter =  query.getSingleResult();
+        counter.setValue( counter.getValue() + 1 );
+        em.persist(counter);
+        return counter.getValue();
     }
 }

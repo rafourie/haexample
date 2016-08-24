@@ -78,8 +78,6 @@ public class HAExampleServlet  extends GenericServlet {
 
     private int getFromDatabaseCounter()
     {
-        Counter c = counterRepository.findByName("globalSingleton");
-        // We need to increment the counter rather than just get the current value;
-        return c.getValue();
+        return counterRepository.incrementCounter("globalSingleton");
     }
 }
