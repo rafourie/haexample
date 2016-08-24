@@ -3,6 +3,7 @@ package uk.me.eastmans.domain;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -11,7 +12,7 @@ import javax.persistence.TypedQuery;
  */
 @ApplicationScoped
 public class CounterRepository {
-    @Inject
+    @PersistenceContext(unitName = "hadb")
     private EntityManager em;
 
     public int incrementCounter( String name )
