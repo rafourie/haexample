@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
  */
 @ApplicationScoped
 public class CounterRepository {
-    @PersistenceContext(unitName = "hadb")
+    @Inject
     private EntityManager em;
 
     public int incrementCounter( String name )
