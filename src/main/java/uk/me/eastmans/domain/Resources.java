@@ -10,5 +10,5 @@ import javax.persistence.PersistenceContext;
 public class Resources {
 //    @Produces
 //    @PersistenceContext(unitName = "hadb")
-    private EntityManager em;
+//    private EntityManager em;
 }

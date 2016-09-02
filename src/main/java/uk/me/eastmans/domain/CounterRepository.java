@@ -12,8 +12,8 @@ import javax.persistence.TypedQuery;
  */
 @ApplicationScoped
 public class CounterRepository {
-    @Inject
-    private EntityManager em;
+//    @Inject
+//    private EntityManager em;
 
     public int incrementCounter( String name )
     {/*
