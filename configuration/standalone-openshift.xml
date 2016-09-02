@@ -140,26 +140,7 @@
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
                 <!-- ##DATASOURCES## -->
-                <datasource jta="true" jndi-name="java:jboss/datasources/haexample/hadb" pool-name="java:jboss/datasources/haexample/hadb" enabled="true" use-java-context="true" use-ccm="true">
-                    <connection-url>jdbc:postgresql://172.30.72.214:5432/hadb;DB_CLOSE_DELAY=-1</connection-url>
-                    <driver-class>org.postgresql.Driver</driver-class>
-                    <driver>postgresql-jdbc4</driver>
-                    <pool>
-                        <min-pool-size>2</min-pool-size>
-                        <max-pool-size>20</max-pool-size>
-                        <prefill>true</prefill>
-                    </pool>
-                    <security>
-                        <user-name>hadb</user-name>
-                        <password>hadb</password>
-                    </security>
-                    <validation>
-                        <check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
-                        <validate-on-match>false</validate-on-match>
-                        <background-validation>false</background-validation>
-                        <use-fast-fail>false</use-fast-fail>
-                    </validation>
-                </datasource>
+
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
