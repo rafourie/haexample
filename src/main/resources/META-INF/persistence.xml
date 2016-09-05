@@ -3,6 +3,7 @@
     <persistence-unit name="hadb" transaction-type="JTA">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <jta-data-source>java:jboss/datasources/hadb_postgresql</jta-data-source>
+        <!--class>uk.me.eastmans.domain.Counter</class-->
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <!--property name="hibernate.hbm2ddl.auto" value="create-drop"/-->
@@ -11,6 +12,5 @@
             <property name="hibernate.use_sql_comments" value="true"/>
             <property name="hibernate.generate_statistics" value="true"/>
         </properties>
-        <class>uk.me.eastmans.domain.Counter</class>
     </persistence-unit>
 </persistence>

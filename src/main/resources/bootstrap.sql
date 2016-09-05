@@ -1,0 +1,1 @@
+insert into counter (id, name, value) values (1, 'globalSingleton', 0);
