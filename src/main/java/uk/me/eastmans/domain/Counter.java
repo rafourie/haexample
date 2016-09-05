@@ -12,11 +12,12 @@ public class Counter {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(name="name")
     private String name;
 
+    @Column(name="current_value")
     private int value;
 
-    @Column(name="id")
     public Integer getId() {
         return id;
     }
@@ -25,7 +26,6 @@ public class Counter {
         this.id = id;
     }
 
-    @Column(name="name")
     public String getName() {
         return name;
     }
@@ -34,7 +34,6 @@ public class Counter {
         this.name = name;
     }
 
-    @Column(name="current_value")
     public int getValue() {
         return value;
     }
