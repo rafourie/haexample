@@ -11,5 +11,6 @@
             <property name="hibernate.use_sql_comments" value="true"/>
             <property name="hibernate.generate_statistics" value="true"/>
         </properties>
+        <class>uk.me.eastmans.domain.Counter</class>
     </persistence-unit>
 </persistence>
