@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by markeastman on 23/08/2016.
  */
 @Entity
-@Table(name="counters")
+@Table(name="counters",indexes={@Index(columnList="NAME")})
 public class Counter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
