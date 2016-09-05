@@ -16,6 +16,7 @@ public class Counter {
 
     private int value;
 
+    @Column(name="id")
     public Integer getId() {
         return id;
     }
@@ -24,6 +25,7 @@ public class Counter {
         this.id = id;
     }
 
+    @Column(name="name")
     public String getName() {
         return name;
     }
@@ -32,6 +34,7 @@ public class Counter {
         this.name = name;
     }
 
+    @Column(name="current_value")
     public int getValue() {
         return value;
     }
