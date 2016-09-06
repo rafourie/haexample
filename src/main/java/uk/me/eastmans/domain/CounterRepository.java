@@ -13,17 +13,19 @@ import javax.transaction.Transactional;
  */
 @ApplicationScoped
 public class CounterRepository {
-    @Inject
-    private EntityManager em;
+    //@Inject
+    //private EntityManager em;
 
     @Transactional
     public int incrementCounter( String name )
     {
+        /*
         TypedQuery<Counter> query = em.createQuery( "select c from Counter c where c.name = :name", Counter.class);
         query.setParameter("name", name);
         Counter counter =  query.getSingleResult();
         counter.setValue( counter.getValue() + 1 );
         em.persist(counter);
         return counter.getValue();
+        */ return -5;
     }
 }

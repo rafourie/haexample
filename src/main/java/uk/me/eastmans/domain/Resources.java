@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
  * Created by markeastman on 24/08/2016.
  */
 public class Resources {
-    @Produces
-    @PersistenceContext(unitName = "hadb")
-    private EntityManager em;
+    //@Produces
+    //@PersistenceContext(unitName = "hadb")
+    //private EntityManager em;
 }
