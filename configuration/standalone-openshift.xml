@@ -105,7 +105,7 @@
                 <level name="DEBUG"/>
             </logger>
             <logger category="org.openshift.ping">
-                <level name="DEBUG"/>
+                <level name="ALL"/>
             </logger>
             <logger category="sun.rmi">
                 <level name="WARN"/>
